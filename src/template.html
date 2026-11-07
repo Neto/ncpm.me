@@ -1,0 +1,431 @@
+<meta charset="utf-8">
+<title>Spin and Grabb</title>
+<style>
+/* Layout: Apple-style Mac app store page. Glass nav, centered hero, one section per app (copy + looping demo player + buy box), FAQ, footer */
+:root{
+  --bg:#f5f5f7; --tile:#ffffff; --ink:#1d1d1f; --ink-2:#6e6e73; --line:#d2d2d7;
+  --link:#0066cc; --btn:#0071e3; --btn-ink:#ffffff;
+  --spin:#ff3d9a; --grabb:#5b3df5; --ok:#1f9d55; 
+  --font:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#000000; --tile:#161617; --ink:#f5f5f7; --ink-2:#a1a1a6; --line:#424245;
+  --link:#2997ff; --spin:#ff5aac; --grabb:#8c78ff; --ok:#30d158;  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#000000; --tile:#161617; --ink:#f5f5f7; --ink-2:#a1a1a6; --line:#424245;
+  --link:#2997ff; --spin:#ff5aac; --grabb:#8c78ff; --ok:#30d158;  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:17px;line-height:1.47;letter-spacing:-.022em;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:var(--link);text-decoration:none}
+a:hover{text-decoration:underline}
+:focus-visible{outline:2px solid var(--link);outline-offset:3px;border-radius:6px}
+h1,h2,h3{margin:0;font-weight:600;letter-spacing:-.03em;text-wrap:balance}
+p{margin:0}
+.wrap{max-width:1080px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+ .pill{display:inline-flex;align-items:center;justify-content:center;gap:6px;background:var(--btn);color:var(--btn-ink);border:0;border-radius:980px;padding:8px 18px;font:inherit;font-size:15px;cursor:pointer;white-space:nowrap}
+.pill:hover{text-decoration:none;filter:brightness(1.08)}
+.pill.sm{font-size:12px;padding:4px 12px}
+.more::after{content:" ›"}
+
+/* hero */
+.hero{text-align:center;padding-block:80px 64px}
+.eyebrow{font-size:17px;font-weight:600;color:var(--ink-2);margin-bottom:12px}
+.hero h1{font-size:clamp(46px,8.4vw,96px);line-height:1.02;letter-spacing:-.05em}
+.hero h1 span{color:var(--ink-2)}
+.hero .lead{font-size:clamp(19px,2.4vw,24px);color:var(--ink-2);max-width:34ch;margin:20px auto 0;line-height:1.35}
+.hero-apps{display:flex;justify-content:center;gap:clamp(28px,6vw,72px);margin-top:48px}
+.hero-apps a{display:flex;flex-direction:column;align-items:center;gap:12px;color:var(--ink);font-weight:600;font-size:19px}
+.hero-apps a:hover{text-decoration:none}
+
+.hero-apps img{width:clamp(96px,14vw,148px);height:auto;filter:drop-shadow(0 18px 28px rgba(0,0,0,.22));transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+.hero-apps a:hover img{transform:translateY(-6px) scale(1.03)}
+.hero-apps small{display:block;font-weight:400;font-size:14px;color:var(--ink-2);margin-top:-8px}
+
+.promise{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:44px}
+.promise span{font-size:14px;padding:7px 15px;border-radius:99px;background:var(--tile);box-shadow:inset 0 0 0 1px var(--line)}
+.promise b{font-weight:600}
+
+/* app sections */
+.app{padding-block:28px}
+.app-card{background:var(--tile);border-radius:32px;padding:clamp(28px,5vw,64px);display:grid;grid-template-columns:minmax(0,3fr) minmax(0,5fr);gap:clamp(28px,4vw,56px);align-items:center}
+.app.rev .app-card{grid-template-columns:minmax(0,5fr) minmax(0,3fr)}
+.app.rev .copy{order:2}
+@media (max-width:860px){ .app-card,.app.rev .app-card{grid-template-columns:minmax(0,1fr)} .app.rev .copy{order:0} }
+.copy{display:flex;flex-direction:column;gap:16px;min-width:0}
+.copy .ico{width:84px;height:auto}
+.copy h2{font-size:clamp(40px,5.4vw,60px);line-height:1.04}
+.tagline{font-size:clamp(21px,2.4vw,26px);line-height:1.25;font-weight:600;letter-spacing:-.025em}
+#spin .tagline{color:var(--spin)}
+#grabb .tagline{color:var(--grabb)}
+.copy .what{color:var(--ink-2);max-width:46ch}
+.copy ul{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-size:15px}
+.copy li{display:grid;grid-template-columns:18px 1fr;gap:10px}
+.copy li::before{content:"";width:6px;height:6px;border-radius:50%;margin:8px 0 0 4px;background:currentColor;opacity:.45}
+.buy{display:flex;flex-wrap:wrap;align-items:center;gap:14px 18px;margin-top:8px;padding-top:20px;border-top:1px solid var(--line)}
+.buy .price{font-size:34px;font-weight:600;letter-spacing:-.035em;font-variant-numeric:tabular-nums;line-height:1}
+.buy .price small{font-size:14px;font-weight:400;color:var(--ink-2);letter-spacing:0;margin-left:4px}
+.buy .pill{font-size:17px;padding:11px 24px}
+.terms{width:100%;display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px;color:var(--ink-2)}
+.terms span::before{content:"\2713\00a0";color:var(--ok);font-weight:600}
+.req{font-size:13px;color:var(--ink-2)}
+.note{font-size:13px;color:var(--ink-2)}
+
+/* demo player */
+.player{position:relative;width:100%;max-width:100%;aspect-ratio:5/4;cursor:pointer;border-radius:18px;overflow:hidden;background:#111;box-shadow:0 30px 60px -28px rgba(0,0,0,.5),0 0 0 1px rgba(0,0,0,.08);min-width:0}
+.stage{position:absolute;left:0;top:0;width:800px;height:640px;transform-origin:0 0;overflow:hidden;font-family:var(--font);letter-spacing:-.01em}
+.cursor{position:absolute;left:0;top:0;width:22px;height:22px;z-index:20;pointer-events:none;filter:drop-shadow(0 2px 3px rgba(0,0,0,.4));transform-origin:3px 2px}
+
+/* Spin demo */
+.s-wall{position:absolute;inset:0;background:
+  radial-gradient(ellipse at 20% 110%,#ff9b5e 0%,transparent 45%),
+  radial-gradient(ellipse at 90% 0%,#3b6dff 0%,transparent 55%),
+  linear-gradient(160deg,#1a1d4a 0%,#4b2a7a 50%,#c2547a 100%)}
+.menubar{position:absolute;left:0;right:0;top:0;height:24px;background:rgba(20,20,30,.28);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#fff;font-size:12px;display:flex;align-items:center;gap:18px;padding:0 14px}
+.menubar b{font-weight:600}
+.menubar .r{margin-left:auto;display:flex;gap:14px;align-items:center}
+.ring{position:absolute;width:70px;height:70px;border-radius:50%;border:2.5px solid #ff4fa3;box-shadow:0 0 4px #ff4fa3,0 0 14px rgba(255,79,163,.6),inset 0 0 4px rgba(255,79,163,.6)}
+.fold{position:absolute;left:0;top:0;width:56px;height:49px;margin:-24px 0 0 -28px;transform-origin:50% 50%}
+.fold svg{width:100%;height:100%;overflow:visible;filter:drop-shadow(0 3px 4px rgba(0,0,0,.3))}
+.tag{position:absolute;left:50%;top:54px;transform:translateX(-50%);white-space:nowrap;font-size:11px;font-weight:600;color:#fff;background:rgba(0,0,0,.55);padding:2px 8px;border-radius:6px;opacity:0}
+.finder{position:absolute;left:488px;top:110px;width:290px;height:200px;border-radius:12px;background:rgba(246,246,248,.96);box-shadow:0 20px 50px rgba(0,0,0,.45);overflow:hidden;opacity:0;color:#1d1d1f}
+.finder .tb{height:36px;display:flex;align-items:center;gap:7px;padding:0 12px;border-bottom:1px solid #e3e3e6;font-size:13px;font-weight:600}
+.finder .tb i{width:11px;height:11px;border-radius:50%;display:block}
+.finder .tb span{margin-left:10px}
+.finder .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px 8px;padding:16px 14px}
+.finder .f{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:10px;color:#3a3a3c}
+.finder .doc{width:30px;height:36px;border-radius:3px;background:#fff;box-shadow:0 0 0 1px #d6d6db,0 2px 3px rgba(0,0,0,.08);position:relative}
+.finder .doc::after{content:"";position:absolute;left:6px;right:6px;top:9px;height:14px;background:repeating-linear-gradient(#c7c7cc 0 2px,transparent 2px 5px)}
+.finder .doc.pdf{background:#fff linear-gradient(#ff453a,#ff453a) 0 100%/100% 9px no-repeat}
+.finder .doc.img{background:linear-gradient(160deg,#7fb7ff,#ffb36b)}
+.finder .doc.img::after{display:none}
+
+/* Grabb demo */
+.d-stage{position:absolute;inset:0;background:radial-gradient(ellipse 60% 55% at 22% 0%,rgba(255,255,255,.22),transparent 70%),radial-gradient(ellipse 55% 60% at 100% 100%,rgba(196,120,255,.55),transparent 70%),linear-gradient(140deg,#24206e 0%,#3d2fb0 45%,#6a3fd6 100%)}
+.d-logo{display:none}
+.win{position:absolute;left:110px;top:90px;width:580px;height:460px;border-radius:14px;background:#08080d;overflow:hidden;box-shadow:0 0 0 1px rgba(255,255,255,.1),0 30px 80px rgba(20,10,60,.7),0 24px 60px rgba(0,0,0,.35),0 0 0 1px rgba(255,255,255,.08) inset;color:#fff}
+.hbar{height:52px;display:flex;align-items:center;padding:0 16px;gap:8px;background:linear-gradient(180deg,#2c2179,#1a144d)}
+.hbar i{width:12px;height:12px;border-radius:50%;display:block}
+.hbar .title{margin-left:14px;font-weight:700;font-size:15px;letter-spacing:.02em}
+.seg{margin-left:auto;display:flex;background:rgba(255,255,255,.1);border-radius:8px;padding:2px;font-size:12px}
+.seg span{padding:4px 12px;border-radius:6px;color:rgba(255,255,255,.65)}
+.seg span.on{background:rgba(255,255,255,.24);color:#fff}
+.comp{display:flex;gap:8px;padding:14px 16px;align-items:center}
+.btn{height:32px;padding:0 14px;border-radius:9px;display:flex;align-items:center;gap:6px;font-size:13px;background:rgba(255,255,255,.1);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);white-space:nowrap;transition:transform .12s}
+.btn.dl{background:#4a3be0;box-shadow:none;font-weight:600}
+.url{flex:1;height:32px;border-radius:9px;background:rgba(255,255,255,.06);box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);display:flex;align-items:center;padding:0 12px;font-size:13px;color:rgba(255,255,255,.45);overflow:hidden;white-space:nowrap}
+.url.full{color:#fff}
+.qmenu{position:absolute;left:0;top:100px;width:170px;border-radius:10px;background:rgba(44,44,50,.97);box-shadow:0 14px 34px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.1) inset;padding:6px;font-size:12px;opacity:0;transform-origin:50% 0}
+.qmenu h6{margin:4px 8px 2px;font-size:10px;font-weight:600;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.06em}
+.qmenu div{padding:4px 8px;border-radius:5px}
+.qmenu div.hi{background:#4a3be0}
+.qmenu hr{border:0;border-top:1px solid rgba(255,255,255,.12);margin:5px 4px}
+.empty{position:absolute;left:0;right:0;top:220px;text-align:center;color:rgba(255,255,255,.45);font-size:15px}
+.card{position:absolute;left:16px;right:16px;top:112px;height:96px;border-radius:12px;background:rgba(255,255,255,.06);box-shadow:inset 0 0 0 1px rgba(255,255,255,.1);display:flex;gap:14px;padding:12px;opacity:0}
+.thumb{width:128px;height:72px;border-radius:7px;flex:none;background:radial-gradient(circle at 70% 35%,#ffe2a8 0 8%,transparent 9%),linear-gradient(180deg,#ff8a5b,#b04fd0 55%,#251a55 56%,#3a2a7a);position:relative}
+.thumb::after{content:"";position:absolute;left:0;right:0;bottom:0;height:22px;background:#1a123d;border-radius:50% 50% 7px 7px/40% 40% 7px 7px}
+.cinfo{flex:1;display:flex;flex-direction:column;gap:5px;min-width:0}
+.cinfo b{font-size:14px;font-weight:600}
+.cinfo small{font-size:12px;color:rgba(255,255,255,.55)}
+.prog{height:5px;border-radius:3px;background:rgba(255,255,255,.12);overflow:hidden;margin-top:6px}
+.prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,#6b5cff,#9b8cff);border-radius:3px}
+.cstat{font-size:12px;color:rgba(255,255,255,.7);display:flex;justify-content:space-between;font-variant-numeric:tabular-nums}
+.cside{width:132px;border-left:1px solid rgba(255,255,255,.1);display:flex;flex-direction:column;justify-content:center;align-items:center;gap:6px;font-size:12px}
+.cside .done{color:#30d158;font-weight:600;opacity:0}
+.cside .sf{padding:4px 10px;border-radius:99px;background:#2b2179;opacity:0}
+
+/* faq */
+.faq{padding-block:72px 90px}
+.faq h2{font-size:clamp(32px,4.4vw,48px);margin-bottom:24px}
+.faq details{border-top:1px solid var(--line);padding-block:20px}
+.faq details:last-of-type{border-bottom:1px solid var(--line)}
+.faq summary{cursor:pointer;font-size:21px;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:16px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-weight:300;font-size:28px;line-height:1;color:var(--ink-2);transition:transform .25s}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq details p{color:var(--ink-2);margin-top:10px;max-width:65ch}
+
+footer{padding-block:28px 40px;font-size:12px;color:var(--ink-2)}
+footer .wrap{display:flex;flex-direction:column;gap:12px}
+footer .row{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;border-top:1px solid var(--line);padding-top:14px}
+
+@media (prefers-reduced-motion:reduce){ *{transition:none!important} html{scroll-behavior:auto} }
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="folder" viewBox="0 0 46 40"><path d="M3 6a3 3 0 0 1 3-3h11l4 4h19a3 3 0 0 1 3 3v3H3z" fill="var(--fb,#3d8de8)"/><rect x="2" y="10" width="42" height="28" rx="4" fill="var(--ff,#68b0ff)"/><rect x="2" y="10" width="42" height="3" rx="1.5" fill="#fff" opacity=".35"/></symbol>
+    <symbol id="arrow" viewBox="0 0 22 22"><path d="M3 2v16l4.2-4 2.8 6.3 2.6-1.1-2.8-6.2H16z" fill="#000" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+  </defs>
+</svg>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <p class="eyebrow">Apps for Mac</p>
+      <h1>Small apps<br><span>for simple tasks.</span></h1>
+      <p class="lead">Two little Mac apps that each do one job well. Pay $5 once and every future update is yours.</p>
+      <div class="hero-apps">
+        <a href="#spin"><img src="{{SPIN}}" alt="" width="148" height="148">Spin<small>Clean up your Desktop in style.</small></a>
+        <a href="#grabb"><img class="img-grabb" src="{{Grabb}}" alt="" width="148" height="148">Grabb<small>Get videos from anywhere.</small></a>
+      </div>
+      <div class="promise">
+        <span><b>$5</b> per app, once</span><span>Lifetime upgrades</span><span>No in-app purchases</span><span>No subscriptions</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="app" id="spin">
+    <div class="wrap">
+      <div class="app-card">
+        <div class="copy">
+          <img class="ico" src="{{SPIN}}" alt="Spin icon" width="84" height="84">
+          <h2>Spin</h2>
+          <p class="tagline">Clean up your Desktop in style.</p>
+          <p class="what">Spin puts a thin neon ring on your desktop. Hover it and your folders spiral out around it. Click one to open it in the Finder. Move the mouse away and they spiral back in.</p>
+          <ul>
+            <li>Up to 20 folders per ring, opening from the inside out</li>
+            <li>Several rings, each with its own name, folders and place</li>
+            <li>Right-click a folder to give it a color</li>
+            <li>Drag folders in from the Finder and choose Open at Login</li>
+          </ul>
+          <div class="buy">
+            <div class="price">$5.00<small>USD</small></div>
+            <a class="pill" href="#spin" aria-label="Buy Spin for 5 dollars">Buy Spin</a>
+            <div class="terms"><span>Lifetime upgrades</span><span>No in-app purchases</span><span>No subscriptions</span></div>
+          </div>
+          <p class="req">Requires macOS 26 or later on a Mac with Apple silicon.</p>
+        </div>
+        <div class="player" data-demo="spin" aria-label="Short demo of Spin opening a spiral of folders">
+          <div class="stage">
+            <div class="s-wall"></div>
+            <div class="menubar"><b>Finder</b><span>File</span><span>Edit</span><span>View</span><span>Go</span><span class="r"><span>Thu 9:41</span></span></div>
+            <div class="ring"></div>
+            <div class="finder"><div class="tb"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i><span>Clients</span></div>
+              <div class="grid">
+                <div class="f"><div class="doc pdf"></div>Proposal.pdf</div>
+                <div class="f"><div class="doc"></div>Brief.txt</div>
+                <div class="f"><div class="doc img"></div>Moodboard</div>
+                <div class="f"><div class="doc pdf"></div>Contract.pdf</div>
+                <div class="f"><div class="doc img"></div>Logo.png</div>
+                <div class="f"><div class="doc"></div>Notes.md</div>
+                <div class="f"><div class="doc pdf"></div>Invoice.pdf</div>
+                <div class="f"><div class="doc img"></div>Shoot.jpg</div>
+              </div>
+            </div>
+            <svg class="cursor"><use href="#arrow"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="app rev" id="grabb">
+    <div class="wrap">
+      <div class="app-card">
+        <div class="copy">
+          <img class="ico img-grabb" src="{{Grabb}}" alt="Grabb icon" width="84" height="84">
+          <h2>Grabb</h2>
+          <p class="tagline">Get videos from anywhere.</p>
+          <p class="what">Grabb saves videos and audio from YouTube, Instagram, TikTok, Vimeo and many other sites. Paste a link, pick the quality, click Download. The file plays in QuickTime right away.</p>
+          <ul>
+            <li>Quality up to 4K when the site has it, or MP3 audio only</li>
+            <li>Upscale low-resolution videos with Apple machine learning</li>
+            <li>Instagram photos and carousels, a download queue and History</li>
+            <li>Everything it needs is inside the app. Nothing else to install</li>
+          </ul>
+          <div class="buy">
+            <div class="price">$5.00<small>USD</small></div>
+            <a class="pill" href="#grabb" aria-label="Buy Grabb for 5 dollars">Buy Grabb</a>
+            <div class="terms"><span>Lifetime upgrades</span><span>No in-app purchases</span><span>No subscriptions</span></div>
+          </div>
+          <p class="req">Requires macOS 15 or later on a Mac with Apple silicon.</p>
+          <p class="note">Download only content you have permission to save.</p>
+        </div>
+        <div class="player" data-demo="grabb" aria-label="Short demo of Grabb downloading a video">
+          <div class="stage">
+            <div class="d-stage"></div>
+            <div class="win">
+              <div class="hbar"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i><span class="title">Grabb</span><div class="seg"><span class="on">Downloads</span><span>History</span></div></div>
+              <div class="comp">
+                <div class="btn b-paste">Paste</div>
+                <div class="url">Paste a video URL</div>
+                <div class="btn b-q">Best ▾</div>
+                <div class="btn dl b-dl">Download</div>
+              </div>
+              <div class="empty">No downloads yet</div>
+              <div class="card">
+                <div class="thumb"></div>
+                <div class="cinfo"><b>Sunset over the bay, timelapse</b><small>1080p · MP4 · H.264</small>
+                  <div class="prog"><i></i></div>
+                  <div class="cstat"><span class="pct">0%</span><span class="spd">14.2 MB/s</span></div>
+                </div>
+                <div class="cside"><span class="done">✓ Saved to Downloads</span><span class="sf">Show in Finder</span></div>
+              </div>
+              <div class="qmenu">
+                <h6>Available</h6><div class="q1">1080p</div><div>720p</div><div>480p</div><div>Audio only (MP3)</div>
+                <hr><h6>Upscale</h6><div>1440p</div><div>4K</div>
+              </div>
+            </div>
+            <img class="d-logo img-grabb" src="{{Grabb}}" alt="">
+            <svg class="cursor"><use href="#arrow"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="faq" id="faq">
+    <div class="wrap">
+      <h2>Questions</h2>
+      <details>
+        <summary>What does “lifetime upgrades” mean?</summary>
+        <p>You pay $5 once. Every new version of the app you bought is free, for as long as we make the app.</p>
+      </details>
+      <details>
+        <summary>Are there in-app purchases or a subscription?</summary>
+        <p>No. The $5 unlocks the whole app. There is nothing more to buy and nothing renews.</p>
+      </details>
+      <details>
+        <summary>Does it work on my Mac?</summary>
+        <p>Both apps need a Mac with Apple silicon (M1 or later). Spin needs macOS 26 or later. Grabb needs macOS 15 or later.</p>
+      </details>
+      <details>
+        <summary>Do I need to sign in to Instagram to use Grabb?</summary>
+        <p>Only for content that needs a login, such as Stories. Grabb reads the cookies of a browser you choose. You never type a password in Grabb.</p>
+      </details>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Prices in US dollars. Taxes may apply depending on where you live. Grabb uses yt-dlp, FFmpeg and Deno under their own licenses.</p>
+    <div class="row"><span>© 2026 Mentor Neto. All rights reserved.</span><span>Made for Mac</span></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v));
+  const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+    const seg=(t,a,b)=>clamp((t-a)/(b-a));
+  const lerp=(a,b,k)=>a+(b-a)*k;
+  // cursor path: list of [time, x, y]; moves with easing between keys
+  function cursorAt(keys,t){
+    if(t<=keys[0][0]) return keys[0].slice(1);
+    for(let i=0;i<keys.length-1;i++){const [t0,x0,y0]=keys[i],[t1,x1,y1]=keys[i+1];
+      if(t<=t1){const k=ease(seg(t,t0,t1));return [lerp(x0,x1,k),lerp(y0,y1,k)];}}
+    return keys[keys.length-1].slice(1);
+  }
+  const pressAt=(clicks,t)=>clicks.some(c=>t>=c&&t<c+.18);
+
+  /* ---------- Spin ---------- */
+  const SPIN_T=8.6; // loop length: folders are closed and the cursor is back at its start
+  function spinDemo(root){
+    const st=root.querySelector('.stage'), ring=st.querySelector('.ring'), finder=st.querySelector('.finder'), cur=st.querySelector('.cursor');
+    const C=[300,340], S=.72; // center and scale vs. real points
+    const inner=98*S, gap=98*S, spacing=90*S, b=gap/(2*Math.PI);
+    const names=['Projects','Clients','Invoices','Photos','Music','Design','Videos','Notes','Archive'];
+    const tints=[null,['#ff8fc6','#ff5aa8'],null,['#ffd36b','#f2a516'],null,['#8be8b0','#2fbf71'],null,null,['#c6b0ff','#8a64f5']];
+    const P=[];let th=0;
+    names.forEach(()=>{const r=inner+b*th;P.push({r,a:th-Math.PI/2,th});th+=spacing/r;});
+    const pathLen=t=>inner+inner*t+b*t*t/2;
+    function pointAt(L){if(L<=inner)return[0,-L];const arc=L-inner;const t=(-inner+Math.sqrt(inner*inner+2*b*arc))/b;const r=inner+b*t,a=t-Math.PI/2;return[r*Math.cos(a),r*Math.sin(a)];}
+    ring.style.left=(C[0]-35)+'px';ring.style.top=(C[1]-35)+'px';
+    const els=names.map((n,i)=>{const d=document.createElement('div');d.className='fold';
+      if(tints[i]){d.style.setProperty('--ff',tints[i][0]);d.style.setProperty('--fb',tints[i][1]);}
+      d.innerHTML='<svg><use href="#folder"/></svg><span class="tag">'+n+'</span>';st.insertBefore(d,finder);return d;});
+    const pos=i=>[C[0]+P[i].r*Math.cos(P[i].a),C[1]+P[i].r*Math.sin(P[i].a)];
+    const f1=pos(1), f3=pos(3);
+    const keys=[[0,660,570],[1.1,C[0]+6,C[1]+4],[2.6,C[0]+6,C[1]+4],[3.5,f1[0]+4,f1[1]+6],[5.1,f1[0]+4,f1[1]+6],[5.9,f3[0]+4,f3[1]+6],[6.9,f3[0]+4,f3[1]+6],[8.4,660,570],[8.6,660,570]];
+    const clicks=[4.1];
+    return function(t){
+      ring.style.filter='hue-rotate('+(t/SPIN_T*360)+'deg)';
+      const [cx,cy]=cursorAt(keys,t);
+      cur.style.transform=`translate(${cx}px,${cy}px) scale(${pressAt(clicks,t)?.82:1})`;
+      const open=t>=1.15&&t<7.6;
+      const n=els.length;
+      els.forEach((el,i)=>{
+        let p= t<7.6 ? ease(seg(t,1.15+i*.07,1.15+i*.07+.55)) : 1-ease(seg(t,7.6+(n-1-i)*.05,7.6+(n-1-i)*.05+.45));
+        if(t<1.15)p=0;
+        const L=pathLen(P[i].th)*p; const [x,y]=pointAt(L);
+        const drift=open?Math.sin(t*2+i)*1.6:0;
+        const hov=(i===1&&t>=3.5&&t<5.2)||(i===3&&t>=5.9&&t<7.0);
+        const hs=hov?1.35:1;
+        const tilt=6*Math.sin(P[i].a+Math.PI/2);
+        el.style.transform=`translate(${C[0]+x}px,${C[1]+y+drift}px) rotate(${tilt}deg) scale(${(.25+.75*p)*hs})`;
+        el.style.opacity=p<.02?0:1;
+        el.style.zIndex=hov?3:1;
+        el.querySelector('.tag').style.opacity=hov?1:0;
+      });
+      const w=seg(t,4.25,4.55), wc=seg(t,6.4,6.65);
+      const wo=w*(1-wc);
+      finder.style.opacity=wo;
+      finder.style.transform=`scale(${.92+.08*ease(w)})`;
+      finder.style.zIndex=wo>0?4:0;
+    };
+  }
+
+  /* ---------- Grabb ---------- */
+  function grabbDemo(root){
+    const st=root.querySelector('.stage'), cur=st.querySelector('.cursor');
+    const url=st.querySelector('.url'), q=st.querySelector('.b-q'), menu=st.querySelector('.qmenu'), q1=st.querySelector('.q1');
+    const paste=st.querySelector('.b-paste'), dl=st.querySelector('.b-dl'), empty=st.querySelector('.empty'), card=st.querySelector('.card');
+    const bar=st.querySelector('.prog i'), pct=st.querySelector('.pct'), spd=st.querySelector('.spd'), done=st.querySelector('.done'), sf=st.querySelector('.sf');
+    // Cursor targets come from the real layout, so they stay right if the window moves.
+    const at=el=>{let x=0,y=0,e=el;while(e&&e!==st){x+=e.offsetLeft;y+=e.offsetTop;e=e.offsetParent;}return[x+el.offsetWidth/2,y+el.offsetHeight/2];};
+    menu.style.left=(q.offsetLeft+q.offsetWidth-170)+'px';
+    const pP=at(paste),pQ=at(q),pD=at(dl),p1=at(q1);
+    const keys=[[0,660,600],[.9,pP[0],pP[1]+2],[1.7,pP[0],pP[1]+2],[2.4,pQ[0],pQ[1]+2],[3.0,pQ[0],pQ[1]+2],[3.5,p1[0]-20,p1[1]+2],[4.2,p1[0]-20,p1[1]+2],[4.8,pD[0],pD[1]+2],[5.5,pD[0],pD[1]+2],[6.3,560,470],[10,560,470]];
+    const clicks=[1.05,2.55,3.75,4.95];
+    const link='https://vimeo.com/sunset-bay-timelapse';
+    return function(t){
+      const [cx,cy]=cursorAt(keys,t);
+      const pr=pressAt(clicks,t);
+      cur.style.transform=`translate(${cx}px,${cy}px) scale(${pr?.82:1})`;
+      paste.style.transform=(t>=1.05&&t<1.23)?'scale(.94)':'';
+      q.style.transform=(t>=2.55&&t<2.73)?'scale(.94)':'';
+      dl.style.transform=(t>=4.95&&t<5.13)?'scale(.94)':'';
+      const pasted=t>=1.1;
+      url.textContent=pasted?link:'Paste a video URL'; url.classList.toggle('full',pasted);
+      const mo=t>=2.6&&t<3.8;
+      menu.style.opacity=mo?1:0; menu.style.transform=`scale(${mo?1:.96})`;
+      q1.classList.toggle('hi',t>=3.45&&t<3.8);
+      q.textContent=t>=3.8?'1080p ▾':'Best ▾';
+      const started=t>=5.0;
+      empty.style.opacity=started?0:1;
+      card.style.opacity=ease(seg(t,5.0,5.3));
+      card.style.transform=`translateY(${(1-ease(seg(t,5.0,5.35)))*10}px)`;
+      const p=ease(seg(t,5.3,8.0));
+      bar.style.width=(p*100)+'%';
+      pct.textContent=t>=8.0?'100%  ·  84.6 MB':Math.round(p*100)+'%  ·  '+(p*84.6).toFixed(1)+' MB';
+      spd.textContent=t>=8.0?'Done':(13.6+Math.sin(t*5)*1.4).toFixed(1)+' MB/s';
+      done.style.opacity=t>=8.05?1:0; sf.style.opacity=t>=8.2?1:0;
+    };
+  }
+
+  /* ---------- player ---------- */
+  document.querySelectorAll('.player').forEach(root=>{
+    const T=root.dataset.demo==='spin'?SPIN_T:10, stage=root.querySelector('.stage');
+    const render=(root.dataset.demo==='spin'?spinDemo:grabbDemo)(root);
+    let t= reduce ? (root.dataset.demo==='spin'?3.6:6.8) : 0, playing=!reduce, visible=false, last=null;
+    const fit=()=>{stage.style.transform='scale('+(root.clientWidth/800)+')';};
+    new ResizeObserver(fit).observe(root); fit();
+    root.tabIndex=0; root.setAttribute('role','button'); root.setAttribute('aria-pressed',String(!playing));
+    const toggle=()=>{playing=!playing;last=null;root.setAttribute('aria-pressed',String(!playing));};
+    root.addEventListener('click',toggle);
+    root.addEventListener('keydown',e=>{if(e.key===' '||e.key==='Enter'){e.preventDefault();toggle();}});
+    if('IntersectionObserver' in window){new IntersectionObserver(es=>{visible=es[0].isIntersecting;last=null;},{threshold:.2}).observe(root);} else visible=true;
+    function loop(now){
+      if(playing&&visible){ if(last!==null){t+= (now-last)/1000; if(t>=T)t-=T;} last=now; render(t); } else last=null;
+      requestAnimationFrame(loop);
+    }
+    render(t); requestAnimationFrame(loop);
+  });
+})();
+</script>

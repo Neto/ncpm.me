@@ -11,7 +11,7 @@ import base64
 import pathlib
 import re
 
-CONTACT = "CONTACT_PENDING@example.com"  # support address shown on the site
+CONTACT = "support@ncpm.me"  # support address shown on the site
 
 root = pathlib.Path(__file__).resolve().parent
 src = root / "src"
@@ -36,7 +36,7 @@ HEAD = """<!doctype html>
 """
 
 FOOTER_ROW = (
-    '<div class="row"><span>© 2026 Mentor Neto. All rights reserved.</span>'
+    '<div class="row"><span>© 2026 Spinoff Software. All rights reserved.</span>'
     '<nav aria-label="Site"><a href="/">Spin and Grabb</a><a href="/company/">Spinoff Software</a>'
     '<a href="/privacy/">Privacy Policy</a></nav></div>'
 )

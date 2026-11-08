@@ -63,7 +63,7 @@ p{margin:0}
 .app-card{background:var(--tile);border-radius:32px;padding:clamp(28px,5vw,64px);display:grid;grid-template-columns:minmax(0,3fr) minmax(0,5fr);gap:clamp(28px,4vw,56px);align-items:center}
 .app.rev .app-card{grid-template-columns:minmax(0,5fr) minmax(0,3fr)}
 .app.rev .copy{order:2}
-@media (max-width:860px){ .app-card,.app.rev .app-card{grid-template-columns:minmax(0,1fr)} .app.rev .copy{order:0} }
+@media (max-width:860px){ .app-card,.app.rev .app-card{grid-template-columns:minmax(0,1fr)} .copy,.app.rev .copy{order:2} }
 .copy{display:flex;flex-direction:column;gap:16px;min-width:0}
 .copy .ico{width:84px;height:auto}
 .copy h2{font-size:clamp(40px,5.4vw,60px);line-height:1.04}

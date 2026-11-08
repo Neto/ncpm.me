@@ -1,0 +1,61 @@
+// Generated from MakeLogo.swift.in by make_logo.py. Edit the .in file, not this one.
+// Renders the Spinoff Software logo in the same style as the Spin and Grabb icons.
+// Usage: swift design/MakeLogo.swift <output.png>
+import SwiftUI
+
+/// Capital S with rounded corners, drawn on the 1024 point icon canvas.
+struct LetterS: Shape {
+    func path(in rect: CGRect) -> Path {
+        var p = Path()
+// PATH
+        return p
+    }
+}
+
+struct LogoArt: View {
+    var body: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 185)
+                .fill(
+                    LinearGradient(
+                        colors: [Color(white: 0.16), Color(white: 0.05)],
+                        startPoint: .top, endPoint: .bottom
+                    )
+                )
+                .strokeBorder(.white.opacity(0.08), lineWidth: 3)
+                .frame(width: 824, height: 824)
+
+            let neon = AngularGradient(
+                colors: [.pink, .purple, .blue, .cyan, .green, .yellow, .orange, .pink],
+                center: UnitPoint(x: 0.5, y: 0.5)
+            )
+            let glyph = LetterS()
+            glyph
+                .stroke(neon, style: StrokeStyle(lineWidth: 18, lineCap: .round, lineJoin: .round))
+                .blur(radius: 28)
+                .opacity(0.9)
+            glyph
+                .stroke(neon, style: StrokeStyle(lineWidth: 10, lineCap: .round, lineJoin: .round))
+                .blur(radius: 6)
+            glyph
+                .stroke(neon, style: StrokeStyle(lineWidth: 7, lineCap: .round, lineJoin: .round))
+            glyph
+                .stroke(.white.opacity(0.55), style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
+        }
+        .frame(width: 1024, height: 1024)
+        .shadow(color: .black.opacity(0.35), radius: 20, y: 10)
+    }
+}
+
+@MainActor
+func render() throws {
+    let renderer = ImageRenderer(content: LogoArt())
+    renderer.scale = 1
+    guard let image = renderer.cgImage else { fatalError("Failed to render the logo") }
+    guard let png = NSBitmapImageRep(cgImage: image).representation(using: .png, properties: [:]) else {
+        fatalError("Failed to encode PNG")
+    }
+    try png.write(to: URL(filePath: CommandLine.arguments[1]))
+}
+
+try MainActor.assumeIsolated { try render() }

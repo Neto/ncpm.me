@@ -23,6 +23,35 @@ def data_uri(name):
 
 ICONS = {"{{SPIN}}": data_uri("spin.png"), "{{Grabb}}": data_uri("grabb.png")}
 
+
+def spinoff_logo():
+    """Animated Spinoff Software logo: the S from design/make_logo.py in neon layers.
+
+    Same layers as the app icons: a wide blurred glow, a soft glow, the coloured line,
+    and a thin white core. Each coloured layer is a rotating conic gradient masked by
+    the S outline stroked at that layer's width.
+    """
+    d = (root / "design" / "logo-s.path").read_text().strip()
+
+    def mask(width):
+        svg = ('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 824 824">'
+               f'<path d="{d}" fill="none" stroke="#fff" stroke-width="{width}" '
+               'stroke-linejoin="round" stroke-linecap="round"/></svg>')
+        uri = "url('data:image/svg+xml;base64," + base64.b64encode(svg.encode()).decode() + "')"
+        return f'style="-webkit-mask-image:{uri};mask-image:{uri}"'
+
+    return (
+        '<div class="slogo" role="img" aria-label="Spinoff Software logo">'
+        f'<div class="g g1"><i {mask(18)}></i></div>'
+        f'<div class="g g2"><i {mask(10)}></i></div>'
+        f'<div class="g"><i {mask(7)}></i></div>'
+        '<svg class="core" viewBox="0 0 824 824" aria-hidden="true">'
+        f'<path d="{d}"/></svg></div>'
+    )
+
+
+ICONS["{{SLOGO}}"] = spinoff_logo()
+
 HEAD = """<!doctype html>
 <html lang="en">
 <head>
@@ -50,7 +79,21 @@ FOOTER = f"""<footer>
 
 # Styles for the company and privacy pages, on top of the shared base taken from the sales page.
 PAGE_CSS = """
-/* company page */
+/* company page: animated logo, sizes scale from the 824 point squircle of the app icons */
+@property --a{syntax:"<angle>";inherits:true;initial-value:90deg}
+.slogo{--size:clamp(132px,20vw,196px);--s:calc(var(--size) / 824);position:relative;width:var(--size);height:var(--size);margin:0 auto 28px;
+  border-radius:calc(185 * var(--s));background:linear-gradient(#292929,#0d0d0d);
+  box-shadow:inset 0 0 0 calc(3 * var(--s)) rgba(255,255,255,.08),0 18px 28px rgba(0,0,0,.22);
+  animation:slogo-turn 6s linear infinite}
+@keyframes slogo-turn{to{--a:450deg}}
+.slogo .g{position:absolute;inset:0}
+.slogo .g1{filter:blur(calc(28 * var(--s)));opacity:.9}
+.slogo .g2{filter:blur(calc(6 * var(--s)))}
+.slogo i{position:absolute;inset:0;
+  background:conic-gradient(from var(--a),#ff2d55,#af52de,#007aff,#32ade6,#34c759,#ffcc00,#ff9500,#ff2d55);
+  -webkit-mask-size:100% 100%;mask-size:100% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat}
+.slogo .core{position:absolute;inset:0;width:100%;height:100%;fill:none;stroke:rgba(255,255,255,.55);stroke-width:2;stroke-linejoin:round}
+@media (prefers-reduced-motion:reduce){.slogo{animation:none}}
 .apps{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:20px}
 .app-tile{background:var(--tile);border-radius:28px;padding:40px 28px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;color:var(--ink)}
 .app-tile:hover{text-decoration:none}

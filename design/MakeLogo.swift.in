@@ -31,16 +31,16 @@ struct LogoArt: View {
             )
             let glyph = LetterS()
             glyph
-                .stroke(neon, style: StrokeStyle(lineWidth: 18, lineCap: .round, lineJoin: .round))
-                .blur(radius: 28)
+                .stroke(neon, style: StrokeStyle(lineWidth: 12, lineCap: .round, lineJoin: .round))
+                .blur(radius: 18)
                 .opacity(0.9)
             glyph
-                .stroke(neon, style: StrokeStyle(lineWidth: 10, lineCap: .round, lineJoin: .round))
-                .blur(radius: 6)
-            glyph
                 .stroke(neon, style: StrokeStyle(lineWidth: 7, lineCap: .round, lineJoin: .round))
+                .blur(radius: 4)
             glyph
-                .stroke(.white.opacity(0.55), style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
+                .stroke(neon, style: StrokeStyle(lineWidth: 5, lineCap: .round, lineJoin: .round))
+            glyph
+                .stroke(.white.opacity(0.55), style: StrokeStyle(lineWidth: 1.5, lineCap: .round, lineJoin: .round))
         }
         .frame(width: 1024, height: 1024)
         .shadow(color: .black.opacity(0.35), radius: 20, y: 10)

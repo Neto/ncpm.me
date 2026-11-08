@@ -20,7 +20,7 @@ from fontTools.ttLib import TTCollection
 FONT = "/System/Library/Fonts/HelveticaNeue.ttc"
 FACE = 1                # Helvetica Neue Bold
 CORNER_RADIUS = 42      # font units; the S terminals are about 152 units thick
-CAP = 410               # height of the S on the 1024 canvas, close to the Grabb glyph
+CAP = 492               # height of the S on the 1024 canvas
 CANVAS, INSET = 1024, 100
 
 here = pathlib.Path(__file__).resolve().parent
@@ -146,7 +146,7 @@ squircle_path = svg_path(INSET)
 (here / "spinoff-logo-outline.svg").write_text(
     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 824 824" width="824" height="824">\n'
     '<rect width="824" height="824" rx="185" fill="#111"/>\n'
-    f'<path d="{squircle_path}" fill="none" stroke="#fff" stroke-width="7" stroke-linejoin="round"/>\n'
+    f'<path d="{squircle_path}" fill="none" stroke="#fff" stroke-width="5" stroke-linejoin="round"/>\n'
     '</svg>\n')
 
 swift_lines = []

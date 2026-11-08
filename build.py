@@ -118,7 +118,16 @@ PAGE_CSS = """
 .doc .lead{font-size:21px;line-height:1.4;padding:20px 24px;background:var(--tile);border-radius:18px}
 .doc h2{font-size:24px;margin:40px 0 10px}
 .doc p+p{margin-top:12px}
-.doc ul{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:10px}
+.doc ul,.doc ol{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:10px}
+
+/* download pages */
+.dl{text-align:left}
+.dl-icon{width:128px;height:auto;margin-bottom:20px;filter:drop-shadow(0 14px 22px rgba(0,0,0,.2))}
+.dl h1{margin-bottom:20px}
+.dl-btn{display:flex;flex-wrap:wrap;align-items:center;gap:12px 16px;margin:32px 0 8px}
+.dl-btn .pill{font-size:19px;padding:13px 28px}
+.dl-btn span{color:var(--ink-2);font-size:14px}
+.dl ol+p{margin-top:16px}
 """
 
 
@@ -164,3 +173,18 @@ pages = {
 for rel, (name, description, og_title) in pages.items():
     page = (src / name).read_text()
     write(rel, HEAD.format(description=description, og_title=og_title) + css + fill(page) + FOOTER)
+
+# Download pages. Stripe Payment Links send buyers here after payment. The addresses are
+# random and not linked from the site; the zips are assets of a public GitHub release.
+RELEASE = "https://github.com/Neto/ncpm.me/releases/download/downloads-2026-11/"
+DOWNLOADS = {
+    "get/bcdr7W5qZ4ol/index.html": ("Spin", "{{SPIN}}", "Spin-1.6.zip", "2.7 MB"),
+    "get/XN5POMsYFafm/index.html": ("Grabb", "{{Grabb}}", "Grabb-1.9.0.zip", "80 MB"),
+}
+download = (src / "download.html").read_text()
+for rel, (app, icon, zip_name, size) in DOWNLOADS.items():
+    page = (download.replace("{{APP}}", app).replace("{{ICON}}", icon)
+            .replace("{{ZIP_URL}}", RELEASE + zip_name).replace("{{ZIP_NAME}}", zip_name)
+            .replace("{{SIZE}}", size))
+    write(rel, HEAD.format(description=f"Download {app}.", og_title=f"Download {app}")
+          + css + fill(page) + FOOTER)

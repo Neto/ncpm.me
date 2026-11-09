@@ -12,6 +12,7 @@ import pathlib
 import re
 
 CONTACT = "support@ncpm.me"  # support address shown on the site
+BUNDLE_URL = "https://buy.stripe.com/7sYeVc7086ya4fXeeD3AY02"  # Stripe Payment Link for Spin and Grabb together
 
 root = pathlib.Path(__file__).resolve().parent
 src = root / "src"
@@ -66,7 +67,7 @@ HEAD = """<!doctype html>
 
 FOOTER_ROW = (
     '<div class="row"><span>© 2026 Spinoff Software. All rights reserved.</span>'
-    '<nav aria-label="Site"><a href="/">Spin and Grabb</a><a href="/company/">Spinoff Software</a>'
+    '<nav aria-label="Site"><a href="/">Spin and Grabb</a><a href="/bundle/">Bundle</a><a href="/company/">Spinoff Software</a>'
     '<a href="/privacy/">Privacy Policy</a></nav></div>'
 )
 
@@ -128,12 +129,36 @@ PAGE_CSS = """
 .dl-btn .pill{font-size:19px;padding:13px 28px}
 .dl-btn span{color:var(--ink-2);font-size:14px}
 .dl ol+p{margin-top:16px}
+.dl .dl-btn+.dl-btn{margin-top:0}
+
+/* bundle page and the bundle download page */
+.pair{display:flex;justify-content:center;gap:clamp(12px,3vw,24px);margin-bottom:28px}
+.pair img{width:clamp(96px,14vw,148px);height:auto;filter:drop-shadow(0 18px 28px rgba(0,0,0,.22))}
+.pair-left{justify-content:flex-start;margin-bottom:20px}
+.pair-left img{width:112px}
+.bundle-card{background:var(--tile);border-radius:32px;padding:clamp(28px,5vw,56px);display:flex;flex-direction:column;gap:16px;max-width:760px;margin:0 auto}
+.bundle-apps{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:16px}
+.bundle-app{display:flex;align-items:center;gap:16px;color:var(--ink)}
+.bundle-app:hover{text-decoration:none}
+.bundle-app img{width:72px;height:auto;flex:none;filter:drop-shadow(0 10px 16px rgba(0,0,0,.18))}
+.bundle-app b{display:block;font-size:24px;font-weight:600;letter-spacing:-.03em}
+.bundle-app small{display:block;font-size:15px;color:var(--ink-2)}
+.buy{display:flex;flex-wrap:wrap;align-items:center;gap:14px 18px;margin-top:8px;padding-top:20px;border-top:1px solid var(--line)}
+.buy .price{font-size:34px;font-weight:600;letter-spacing:-.035em;font-variant-numeric:tabular-nums;line-height:1}
+.buy .price small{font-size:14px;font-weight:400;color:var(--ink-2);letter-spacing:0;margin-left:4px}
+.buy .price s{font-size:17px;font-weight:400;color:var(--ink-2);letter-spacing:0;margin-left:10px}
+.buy .pill{font-size:17px;padding:11px 24px}
+.terms{width:100%;display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px;color:var(--ink-2)}
+.terms span::before{content:"\\2713\\00a0";color:var(--ok);font-weight:600}
+.req{font-size:13px;color:var(--ink-2)}
+.bundle-what{padding-bottom:64px}
 """
 
 
 def fill(html):
     for key, value in ICONS.items():
         html = html.replace(key, value)
+    html = html.replace("{{BUNDLE_URL}}", BUNDLE_URL)
     html = html.replace("{{CONTACT}}", CONTACT).replace("{{FOOTER_ROW}}", FOOTER_ROW)
     leftover = re.findall(r"\{\{[A-Za-z_]+\}\}", html)
     assert not leftover, f"unreplaced placeholders: {leftover}"
@@ -166,6 +191,9 @@ pages = {
     "company/index.html": ("company.html",
                            "Spinoff Software makes small Mac apps for simple tasks: Spin and Grabb.",
                            "Spinoff Software"),
+    "bundle/index.html": ("bundle.html",
+                          "Spin and Grabb together for 8 dollars, once. Both Mac apps with lifetime upgrades.",
+                          "Spin and Grabb Bundle"),
     "privacy/index.html": ("privacy.html",
                            "How Spinoff Software handles your data in Spin, Grabb and on this website.",
                            "Privacy Policy · Spinoff Software"),
@@ -188,3 +216,13 @@ for rel, (app, icon, zip_name, size) in DOWNLOADS.items():
             .replace("{{SIZE}}", size))
     write(rel, HEAD.format(description=f"Download {app}.", og_title=f"Download {app}")
           + css + fill(page) + FOOTER)
+
+# Bundle download page: one payment, both installers.
+BUNDLE_PAGE = "get/sw8jntSb82WU/index.html"
+page = (src / "download-bundle.html").read_text()
+for app, key in (("Spin", "SPIN"), ("Grabb", "GRABB")):
+    zip_name, size = next((z, s) for a, _, z, s in DOWNLOADS.values() if a == app)
+    page = (page.replace("{{%s_ZIP_URL}}" % key, RELEASE + zip_name)
+            .replace("{{%s_ZIP_NAME}}" % key, zip_name).replace("{{%s_SIZE}}" % key, size))
+write(BUNDLE_PAGE, HEAD.format(description="Download Spin and Grabb.", og_title="Download Spin and Grabb")
+      + css + fill(page) + FOOTER)

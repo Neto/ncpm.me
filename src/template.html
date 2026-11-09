@@ -48,6 +48,18 @@ p{margin:0}
 .promise{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:44px}
 .promise span{font-size:14px;padding:7px 15px;border-radius:99px;background:var(--tile);box-shadow:inset 0 0 0 1px var(--line)}
 .promise b{font-weight:600}
+.promise .deal{font-size:14px;padding:7px 15px;border-radius:99px;background:var(--btn);color:var(--btn-ink)}
+.promise .deal:hover{text-decoration:none;filter:brightness(1.08)}
+
+/* bundle banner */
+.bundle-band{padding-block:28px}
+.bundle-band .band{background:var(--tile);border-radius:32px;padding:clamp(28px,5vw,48px);display:flex;flex-wrap:wrap;align-items:center;gap:20px 32px}
+.bundle-band .icons{display:flex;gap:10px}
+.bundle-band .icons img{width:72px;height:auto;filter:drop-shadow(0 10px 16px rgba(0,0,0,.18))}
+.bundle-band .txt{flex:1 1 280px;display:flex;flex-direction:column;gap:6px}
+.bundle-band h2{font-size:clamp(28px,3.6vw,40px);line-height:1.08}
+.bundle-band p{color:var(--ink-2)}
+.bundle-band .pill{font-size:17px;padding:11px 24px}
 
 /* app sections */
 .app{padding-block:28px}
@@ -175,7 +187,7 @@ footer nav a{color:var(--ink-2)}
         <a href="#grabb"><img class="img-grabb" src="{{Grabb}}" alt="" width="148" height="148">Grabb<small>Get videos from anywhere.</small></a>
       </div>
       <div class="promise">
-        <span><b>$5</b> per app, once</span><span>Lifetime upgrades</span><span>No in-app purchases</span><span>No subscriptions</span>
+        <span><b>$5</b> per app, once</span><a class="deal" href="/bundle/"><b>$8</b> for both</a><span>Lifetime upgrades</span><span>No in-app purchases</span><span>No subscriptions</span>
       </div>
     </div>
   </section>
@@ -276,6 +288,16 @@ footer nav a{color:var(--ink-2)}
             <svg class="cursor"><use href="#arrow"/></svg>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bundle-band" id="bundle">
+    <div class="wrap">
+      <div class="band">
+        <div class="icons"><img src="{{SPIN}}" alt="" width="72" height="72"><img class="img-grabb" src="{{Grabb}}" alt="" width="72" height="72"></div>
+        <div class="txt"><h2>Get both for $8.</h2><p>Spin and Grabb together, once. Lifetime upgrades for both apps.</p></div>
+        <a class="pill" href="/bundle/">See the Bundle</a>
       </div>
     </div>
   </section>

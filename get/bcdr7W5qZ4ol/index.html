@@ -55,6 +55,18 @@ p{margin:0}
 .promise{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:44px}
 .promise span{font-size:14px;padding:7px 15px;border-radius:99px;background:var(--tile);box-shadow:inset 0 0 0 1px var(--line)}
 .promise b{font-weight:600}
+.promise .deal{font-size:14px;padding:7px 15px;border-radius:99px;background:var(--btn);color:var(--btn-ink)}
+.promise .deal:hover{text-decoration:none;filter:brightness(1.08)}
+
+/* bundle banner */
+.bundle-band{padding-block:28px}
+.bundle-band .band{background:var(--tile);border-radius:32px;padding:clamp(28px,5vw,48px);display:flex;flex-wrap:wrap;align-items:center;gap:20px 32px}
+.bundle-band .icons{display:flex;gap:10px}
+.bundle-band .icons img{width:72px;height:auto;filter:drop-shadow(0 10px 16px rgba(0,0,0,.18))}
+.bundle-band .txt{flex:1 1 280px;display:flex;flex-direction:column;gap:6px}
+.bundle-band h2{font-size:clamp(28px,3.6vw,40px);line-height:1.08}
+.bundle-band p{color:var(--ink-2)}
+.bundle-band .pill{font-size:17px;padding:11px 24px}
 
 footer{padding-block:28px 40px;font-size:12px;color:var(--ink-2)}
 footer .wrap{display:flex;flex-direction:column;gap:12px}
@@ -112,6 +124,29 @@ footer nav a{color:var(--ink-2)}
 .dl-btn .pill{font-size:19px;padding:13px 28px}
 .dl-btn span{color:var(--ink-2);font-size:14px}
 .dl ol+p{margin-top:16px}
+.dl .dl-btn+.dl-btn{margin-top:0}
+
+/* bundle page and the bundle download page */
+.pair{display:flex;justify-content:center;gap:clamp(12px,3vw,24px);margin-bottom:28px}
+.pair img{width:clamp(96px,14vw,148px);height:auto;filter:drop-shadow(0 18px 28px rgba(0,0,0,.22))}
+.pair-left{justify-content:flex-start;margin-bottom:20px}
+.pair-left img{width:112px}
+.bundle-card{background:var(--tile);border-radius:32px;padding:clamp(28px,5vw,56px);display:flex;flex-direction:column;gap:16px;max-width:760px;margin:0 auto}
+.bundle-apps{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:16px}
+.bundle-app{display:flex;align-items:center;gap:16px;color:var(--ink)}
+.bundle-app:hover{text-decoration:none}
+.bundle-app img{width:72px;height:auto;flex:none;filter:drop-shadow(0 10px 16px rgba(0,0,0,.18))}
+.bundle-app b{display:block;font-size:24px;font-weight:600;letter-spacing:-.03em}
+.bundle-app small{display:block;font-size:15px;color:var(--ink-2)}
+.buy{display:flex;flex-wrap:wrap;align-items:center;gap:14px 18px;margin-top:8px;padding-top:20px;border-top:1px solid var(--line)}
+.buy .price{font-size:34px;font-weight:600;letter-spacing:-.035em;font-variant-numeric:tabular-nums;line-height:1}
+.buy .price small{font-size:14px;font-weight:400;color:var(--ink-2);letter-spacing:0;margin-left:4px}
+.buy .price s{font-size:17px;font-weight:400;color:var(--ink-2);letter-spacing:0;margin-left:10px}
+.buy .pill{font-size:17px;padding:11px 24px}
+.terms{width:100%;display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px;color:var(--ink-2)}
+.terms span::before{content:"\2713\00a0";color:var(--ok);font-weight:600}
+.req{font-size:13px;color:var(--ink-2)}
+.bundle-what{padding-bottom:64px}
 </style>
 <title>Thank you · Spin</title>
 <meta name="robots" content="noindex, nofollow">
@@ -135,6 +170,6 @@ footer nav a{color:var(--ink-2)}
 </main>
 <footer>
   <div class="wrap">
-    <div class="row"><span>© 2026 Spinoff Software. All rights reserved.</span><nav aria-label="Site"><a href="/">Spin and Grabb</a><a href="/company/">Spinoff Software</a><a href="/privacy/">Privacy Policy</a></nav></div>
+    <div class="row"><span>© 2026 Spinoff Software. All rights reserved.</span><nav aria-label="Site"><a href="/">Spin and Grabb</a><a href="/bundle/">Bundle</a><a href="/company/">Spinoff Software</a><a href="/privacy/">Privacy Policy</a></nav></div>
   </div>
 </footer>

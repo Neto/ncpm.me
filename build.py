@@ -2,7 +2,7 @@
 """Build the site from src/.
 
 src/template.html  -> index.html          (Spin and Grabb sales page)
-src/company.html   -> company/index.html  (Spinoff Software home)
+src/company.html   -> company/index.html  (Spoon Software home)
 src/privacy.html   -> privacy/index.html  (Privacy Policy)
 
 Embeds the app icons, adds the shared head and footer, and fills in the contact address.
@@ -11,7 +11,7 @@ import base64
 import pathlib
 import re
 
-CONTACT = "support@ncpm.me"  # support address shown on the site
+CONTACT = "support@spoon.com.br"  # support address shown on the site
 BUNDLE_URL = "https://buy.stripe.com/7sYeVc7086ya4fXeeD3AY02"  # Stripe Payment Link for Spin and Grabb together
 
 root = pathlib.Path(__file__).resolve().parent
@@ -25,8 +25,8 @@ def data_uri(name):
 ICONS = {"{{SPIN}}": data_uri("spin.png"), "{{Grabb}}": data_uri("grabb.png")}
 
 
-def spinoff_logo():
-    """Animated Spinoff Software logo: the S from design/make_logo.py in neon layers.
+def spoon_logo():
+    """Animated Spoon Software logo: the S from design/make_logo.py in neon layers.
 
     Same layers as the app icons: a wide blurred glow, a soft glow, the coloured line,
     and a thin white core. Each coloured layer is a rotating conic gradient masked by
@@ -42,7 +42,7 @@ def spinoff_logo():
         return f'style="-webkit-mask-image:{uri};mask-image:{uri}"'
 
     return (
-        '<div class="slogo" role="img" aria-label="Spinoff Software logo">'
+        '<div class="slogo" role="img" aria-label="Spoon Software logo">'
         f'<div class="g g1"><i {mask(12)}></i></div>'
         f'<div class="g g2"><i {mask(7)}></i></div>'
         f'<div class="g"><i {mask(5)}></i></div>'
@@ -51,7 +51,7 @@ def spinoff_logo():
     )
 
 
-ICONS["{{SLOGO}}"] = spinoff_logo()
+ICONS["{{SLOGO}}"] = spoon_logo()
 
 HEAD = """<!doctype html>
 <html lang="en">
@@ -66,8 +66,8 @@ HEAD = """<!doctype html>
 """
 
 FOOTER_ROW = (
-    '<div class="row"><span>© 2026 Spinoff Software. All rights reserved.</span>'
-    '<nav aria-label="Site"><a href="/">Spin and Grabb</a><a href="/bundle/">Bundle</a><a href="/company/">Spinoff Software</a>'
+    '<div class="row"><span>© 2026 Spoon Software. All rights reserved.</span>'
+    '<nav aria-label="Site"><a href="/">Spin and Grabb</a><a href="/bundle/">Bundle</a><a href="/company/">Spoon Software</a>'
     '<a href="/privacy/">Privacy Policy</a></nav></div>'
 )
 
@@ -189,14 +189,14 @@ css = "<style>\n" + base + footer_css + PAGE_CSS + "</style>\n"
 
 pages = {
     "company/index.html": ("company.html",
-                           "Spinoff Software makes small Mac apps for simple tasks: Spin and Grabb.",
-                           "Spinoff Software"),
+                           "Spoon Software makes small Mac apps for simple tasks: Spin and Grabb.",
+                           "Spoon Software"),
     "bundle/index.html": ("bundle.html",
                           "Spin and Grabb together for 8 dollars, once. Both Mac apps with lifetime upgrades.",
                           "Spin and Grabb Bundle"),
     "privacy/index.html": ("privacy.html",
-                           "How Spinoff Software handles your data in Spin, Grabb and on this website.",
-                           "Privacy Policy · Spinoff Software"),
+                           "How Spoon Software handles your data in Spin, Grabb and on this website.",
+                           "Privacy Policy · Spoon Software"),
 }
 for rel, (name, description, og_title) in pages.items():
     page = (src / name).read_text()
@@ -204,7 +204,7 @@ for rel, (name, description, og_title) in pages.items():
 
 # Download pages. Stripe Payment Links send buyers here after payment. The addresses are
 # random and not linked from the site; the zips are assets of a public GitHub release.
-RELEASE = "https://github.com/Neto/ncpm.me/releases/download/downloads-2026-11/"
+RELEASE = "https://github.com/Neto/spoon.com.br/releases/download/downloads-2026-11/"
 DOWNLOADS = {
     "get/bcdr7W5qZ4ol/index.html": ("Spin", "{{SPIN}}", "Spin-1.6.zip", "2.7 MB"),
     "get/XN5POMsYFafm/index.html": ("Grabb", "{{Grabb}}", "Grabb-1.9.0.zip", "80 MB"),

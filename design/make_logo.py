@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Spinoff Software logo: a capital S in the neon line style of the Spin and Grabb icons.
+"""Spoon Software logo: a capital S in the neon line style of the Spin and Grabb icons.
 
 Takes the S outline from Helvetica Neue Bold, rounds its sharp corners, and places it
 on the 1024 point icon canvas (the dark squircle is 824 points wide, inset 100).
@@ -7,7 +7,7 @@ on the 1024 point icon canvas (the dark squircle is 824 points wide, inset 100).
 Writes:
   design/logo-s.path       SVG path data, in squircle coordinates (0 to 824)
   design/MakeLogo.swift    SwiftUI renderer for the static PNG (run it with swift)
-  design/spinoff-logo-outline.svg  one colour outline, for print and documents
+  design/spoon-logo-outline.svg  one colour outline, for print and documents
 
 Needs fontTools:  python3 -m pip install fonttools
 """
@@ -143,7 +143,7 @@ def svg_path(offset):
 squircle_path = svg_path(INSET)
 (here / "logo-s.path").write_text(squircle_path + "\n")
 
-(here / "spinoff-logo-outline.svg").write_text(
+(here / "spoon-logo-outline.svg").write_text(
     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 824 824" width="824" height="824">\n'
     '<rect width="824" height="824" rx="185" fill="#111"/>\n'
     f'<path d="{squircle_path}" fill="none" stroke="#fff" stroke-width="5" stroke-linejoin="round"/>\n'

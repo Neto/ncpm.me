@@ -1,5 +1,5 @@
 // Generated from MakeLogo.swift.in by make_logo.py. Edit the .in file, not this one.
-// Renders the Spinoff Software logo in the same style as the Spin and Grabb icons.
+// Renders the Spoon Software logo in the same style as the Spin and Grabb icons.
 // Usage: swift design/MakeLogo.swift <output.png>
 import SwiftUI
 

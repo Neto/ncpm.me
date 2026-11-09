@@ -152,15 +152,18 @@ footer nav a{color:var(--ink-2)}
 <main class="doc wrap">
   <p class="crumb"><a href="/">‹ Spin and Grabb</a></p>
   <h1>Privacy Policy</h1>
-  <p class="meta">Last updated November 7, 2026</p>
+  <p class="meta">Last updated November 9, 2026</p>
 
-  <p class="lead">Short version: our apps work on your Mac. We have no accounts, no analytics and no tracking. We only get your data when you buy an app or write to us.</p>
+  <p class="lead">Short version: our apps work on your Mac. The apps have no accounts, no analytics and no tracking. This website uses a Meta Pixel to measure our ads, only if you accept cookies. We get your personal data only when you buy an app or write to us.</p>
 
   <h2>Who we are</h2>
   <p>Spoon Software (“we”) makes the Mac apps Spin and Grabb and runs this website. For any privacy question, write to <a href="mailto:support@spoon.com.br">support@spoon.com.br</a>.</p>
 
-  <h2>This website</h2>
-  <p>This website uses no cookies, no analytics and no third party scripts or fonts. It is hosted on GitHub Pages. Like any web server, GitHub receives your IP address when you open a page and can keep it in its logs for security. See the <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub Privacy Statement</a>.</p>
+  <h2 id="website">This website</h2>
+  <p>This website is hosted on GitHub Pages. Like any web server, GitHub receives your IP address when you open a page and can keep it in its logs for security. See the <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub Privacy Statement</a>.</p>
+  <p>When you first open this website, we ask if you accept cookies for advertising. If you decline, the Meta Pixel does not load. We store your choice in your browser.</p>
+  <p>If you accept, this website loads the Meta Pixel from Meta Platforms. Meta can then receive your IP address, your browser details, Meta cookies, the pages you open, clicks on our buy buttons and the fact that you completed a purchase. We use this to measure our ads and to show ads to people who visited this website. The legal basis is your consent. Meta can process this data outside your country, under its own <a href="https://www.facebook.com/privacy/policy/">Privacy Policy</a>.</p>
+  <p>To change your choice at any time, click <b>Cookies</b> at the bottom of any page.</p>
 
   <h2>Spin</h2>
   <p>Spin works only on your Mac. It keeps your Spins, the folders in them and their positions in the app's settings on your Mac. Spin does not send your files, folder names or settings to us or to anyone else.</p>
@@ -178,13 +181,13 @@ footer nav a{color:var(--ink-2)}
   <p>Once a day, Spin and Grabb check for a new version. They download a small update file from GitHub. This request includes your IP address and the name and version of the app. The apps do not send information about your Mac or about how you use them.</p>
 
   <h2>Purchases</h2>
-  <p>A payment provider sells the apps for us and acts as the merchant of record. It collects your name, email address, country and payment details, and processes them under its own privacy policy. We receive your name, email address, country and the product you bought, so we can deliver the app and help you. We never see your card number.</p>
+  <p>We use Stripe to take payments. Stripe collects your name, email address, country and payment details, and processes them under its own <a href="https://stripe.com/privacy">privacy policy</a>. We receive your name, email address, country and the product you bought, so we can deliver the app and help you. We never see your card number.</p>
 
   <h2>Email</h2>
   <p>When you write to us, we keep your message and your email address so we can answer you.</p>
 
   <h2>What we do not do</h2>
-  <p>We do not sell your data. We do not share it for advertising. We do not track you across apps or websites.</p>
+  <p>We do not sell your data. Our apps do not track you. We do not share your purchase records or emails for advertising. This website shares data with Meta only if you accept cookies.</p>
 
   <h2>How long we keep data</h2>
   <p>We keep purchase records for as long as tax law requires. We keep emails for as long as we need them to help you, and we delete them when you ask, unless the law requires us to keep them.</p>
@@ -200,6 +203,40 @@ footer nav a{color:var(--ink-2)}
 </main>
 <footer>
   <div class="wrap">
-    <div class="row"><span>© 2026 Spoon Software. All rights reserved.</span><nav aria-label="Site"><a href="/">Spin and Grabb</a><a href="/bundle/">Bundle</a><a href="/company/">Spoon Software</a><a href="/privacy/">Privacy Policy</a></nav></div>
+    <div class="row"><span>© 2026 Spoon Software. All rights reserved.</span><nav aria-label="Site"><a href="/">Spin and Grabb</a><a href="/bundle/">Bundle</a><a href="/company/">Spoon Software</a><a href="/privacy/">Privacy Policy</a><a href="#" id="cookie-settings">Cookies</a></nav></div>
   </div>
 </footer>
+<style>
+.consent{position:fixed;left:16px;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:1000;max-width:560px;margin-inline:auto;display:flex;flex-wrap:wrap;align-items:center;gap:12px 16px;padding:16px 18px;border:1px solid var(--line);border-radius:18px;background:var(--tile);color:var(--ink);font-size:14px;line-height:1.4;box-shadow:0 12px 32px rgba(0,0,0,.28)}
+.consent[hidden]{display:none}
+.consent p{flex:1 1 280px;margin:0}
+.consent div{display:flex;gap:8px;margin-left:auto}
+.consent button{min-height:40px;padding:0 18px;border:1px solid var(--line);border-radius:980px;background:transparent;color:var(--ink);font:inherit;cursor:pointer}
+</style>
+<div id="consent" class="consent" role="region" aria-label="Cookie choice" hidden>
+  <p>With your OK, we use a Meta Pixel to measure our ads. <a href="/privacy/#website">Privacy Policy</a></p>
+  <div><button type="button" data-consent="no">Decline</button><button type="button" data-consent="yes">Accept</button></div>
+</div>
+<script>
+(function(){
+  var KEY="spoon-consent",PIXEL="1867919934360605",PURCHASE=null;
+  var box=document.getElementById("consent"),loaded=false;
+  function get(k){try{return localStorage.getItem(k)}catch(e){return null}}
+  function put(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+  function drop(k){try{localStorage.removeItem(k)}catch(e){}}
+  function start(){
+    if(loaded)return;loaded=true;
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version="2.0";n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,"script","https://connect.facebook.net/en_US/fbevents.js");
+    fbq("init",PIXEL);fbq("track","PageView");
+    if(PURCHASE){var done="spoon-purchase:"+location.pathname;if(!get(done)){put(done,"1");fbq("track","Purchase",PURCHASE)}}
+  }
+  document.addEventListener("click",function(e){
+    var t=e.target.closest&&e.target.closest("a,button");if(!t)return;
+    var c=t.getAttribute("data-consent");
+    if(c){put(KEY,c);box.hidden=true;if(c==="yes")start();else if(loaded)location.reload();return}
+    if(t.id==="cookie-settings"){e.preventDefault();drop(KEY);box.hidden=false;return}
+    if(loaded&&t.href&&t.href.indexOf("buy.stripe.com")>-1)fbq("track","InitiateCheckout",{content_name:t.getAttribute("aria-label")||t.textContent});
+  });
+  var s=get(KEY);if(s==="yes")start();else if(s!=="no")box.hidden=false;
+})();
+</script>

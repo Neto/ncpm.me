@@ -68,7 +68,7 @@ HEAD = """<!doctype html>
 FOOTER_ROW = (
     '<div class="row"><span>© 2026 Spoon Software. All rights reserved.</span>'
     '<nav aria-label="Site"><a href="/">Spin and Grabb</a><a href="/bundle/">Bundle</a><a href="/company/">Spoon Software</a>'
-    '<a href="/privacy/">Privacy Policy</a></nav></div>'
+    '<a href="/privacy/">Privacy Policy</a><a href="#" id="cookie-settings">Cookies</a></nav></div>'
 )
 
 FOOTER = f"""<footer>
@@ -165,7 +165,21 @@ def fill(html):
     return html
 
 
+# Meta Pixel and cookie choice, added to every page. The Pixel loads only after the visitor accepts.
+PURCHASES = {
+    "get/bcdr7W5qZ4ol/index.html": ("Spin", 5),
+    "get/XN5POMsYFafm/index.html": ("Grabb", 5),
+    "get/sw8jntSb82WU/index.html": ("Spin and Grabb", 8),
+}
+CONSENT = (src / "consent.html").read_text()
+
+
 def write(rel, html):
+    purchase = "null"
+    if rel in PURCHASES:
+        name, value = PURCHASES[rel]
+        purchase = '{content_name:"%s",value:%d,currency:"USD"}' % (name, value)
+    html = html.rstrip() + "\n" + CONSENT.replace("{{PURCHASE}}", purchase)
     out = root / rel
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(html)

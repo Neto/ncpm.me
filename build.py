@@ -221,7 +221,7 @@ for rel, (name, description, og_title) in pages.items():
 RELEASE = "https://github.com/Neto/spoon.com.br/releases/download/downloads-2026-11/"
 DOWNLOADS = {
     "get/bcdr7W5qZ4ol/index.html": ("Spin", "{{SPIN}}", "Spin-1.9.1.zip", "2.7 MB"),
-    "get/XN5POMsYFafm/index.html": ("Grabb", "{{Grabb}}", "Grabb-1.9.0.zip", "80 MB"),
+    "get/XN5POMsYFafm/index.html": ("Grabb", "{{Grabb}}", "Grabb-1.10.0.zip", "80 MB"),
 }
 download = (src / "download.html").read_text()
 for rel, (app, icon, zip_name, size) in DOWNLOADS.items():
@@ -229,6 +229,15 @@ for rel, (app, icon, zip_name, size) in DOWNLOADS.items():
             .replace("{{ZIP_URL}}", RELEASE + zip_name).replace("{{ZIP_NAME}}", zip_name)
             .replace("{{SIZE}}", size))
     write(rel, HEAD.format(description=f"Download {app}.", og_title=f"Download {app}")
+          + css + fill(page) + FOOTER)
+
+# Public trial download pages (linked from the site and from the license server).
+trial = (src / "trial.html").read_text()
+for app, icon in (("Spin", "{{SPIN}}"), ("Grabb", "{{Grabb}}")):
+    zip_name, size = next((z, s) for a, _, z, s in DOWNLOADS.values() if a == app)
+    page = (trial.replace("{{APP}}", app).replace("{{ICON}}", icon)
+            .replace("{{ZIP_URL}}", RELEASE + zip_name).replace("{{ZIP_NAME}}", zip_name).replace("{{SIZE}}", size))
+    write(f"download/{app.lower()}/index.html", HEAD.format(description=f"Download {app} for Mac. Free 7 day trial.", og_title=f"Download {app}")
           + css + fill(page) + FOOTER)
 
 # Bundle download page: one payment, both installers.

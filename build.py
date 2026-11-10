@@ -220,7 +220,7 @@ for rel, (name, description, og_title) in pages.items():
 # random and not linked from the site; the zips are assets of a public GitHub release.
 RELEASE = "https://github.com/Neto/spoon.com.br/releases/download/downloads-2026-11/"
 DOWNLOADS = {
-    "get/bcdr7W5qZ4ol/index.html": ("Spin", "{{SPIN}}", "Spin-1.8.zip", "2.7 MB"),
+    "get/bcdr7W5qZ4ol/index.html": ("Spin", "{{SPIN}}", "Spin-1.9.zip", "2.7 MB"),
     "get/XN5POMsYFafm/index.html": ("Grabb", "{{Grabb}}", "Grabb-1.9.0.zip", "80 MB"),
 }
 download = (src / "download.html").read_text()

@@ -88,6 +88,7 @@ p{margin:0}
 .note{font-size:13px;color:var(--ink-2)}
 
 /* demo player */
+.player video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 .player{position:relative;width:100%;max-width:100%;aspect-ratio:5/4;cursor:pointer;border-radius:18px;overflow:hidden;background:#111;box-shadow:0 30px 60px -28px rgba(0,0,0,.5),0 0 0 1px rgba(0,0,0,.08);min-width:0}
 .stage{position:absolute;left:0;top:0;width:800px;height:640px;transform-origin:0 0;overflow:hidden;font-family:var(--font);letter-spacing:-.01em}
 .cursor{position:absolute;left:0;top:0;width:22px;height:22px;z-index:20;pointer-events:none;filter:drop-shadow(0 2px 3px rgba(0,0,0,.4));transform-origin:3px 2px}
@@ -214,25 +215,8 @@ footer nav a{color:var(--ink-2)}
           </div>
           <p class="req">Requires macOS 26 or later on a Mac with Apple silicon.</p>
         </div>
-        <div class="player" data-demo="spin" aria-label="Short demo of Spin opening a spiral of files and folders">
-          <div class="stage">
-            <div class="s-wall"></div>
-            <div class="menubar"><b>Finder</b><span>File</span><span>Edit</span><span>View</span><span>Go</span><span class="r"><span>Thu 9:41</span></span></div>
-            <div class="ring"></div>
-            <div class="finder"><div class="tb"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i><span>Clients</span></div>
-              <div class="grid">
-                <div class="f"><div class="doc pdf"></div>Proposal.pdf</div>
-                <div class="f"><div class="doc"></div>Brief.txt</div>
-                <div class="f"><div class="doc img"></div>Moodboard</div>
-                <div class="f"><div class="doc pdf"></div>Contract.pdf</div>
-                <div class="f"><div class="doc img"></div>Logo.png</div>
-                <div class="f"><div class="doc"></div>Notes.md</div>
-                <div class="f"><div class="doc pdf"></div>Invoice.pdf</div>
-                <div class="f"><div class="doc img"></div>Shoot.jpg</div>
-              </div>
-            </div>
-            <svg class="cursor"><use href="#arrow"/></svg>
-          </div>
+        <div class="player" data-video aria-label="Screen recording of Spin opening a spiral of folders">
+          <video src="/media/spin-demo.mp4" autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video>
         </div>
       </div>
     </div>
@@ -260,34 +244,8 @@ footer nav a{color:var(--ink-2)}
           <p class="req">Requires macOS 15 or later on a Mac with Apple silicon.</p>
           <p class="note">Download only content you have permission to save.</p>
         </div>
-        <div class="player" data-demo="grabb" aria-label="Short demo of Grabb downloading a video">
-          <div class="stage">
-            <div class="d-stage"></div>
-            <div class="win">
-              <div class="hbar"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i><span class="title">Grabb</span><div class="seg"><span class="on">Downloads</span><span>History</span></div></div>
-              <div class="comp">
-                <div class="btn b-paste">Paste</div>
-                <div class="url">Paste a video URL</div>
-                <div class="btn b-q">Best ▾</div>
-                <div class="btn dl b-dl">Download</div>
-              </div>
-              <div class="empty">No downloads yet</div>
-              <div class="card">
-                <div class="thumb"></div>
-                <div class="cinfo"><b>Sunset over the bay, timelapse</b><small>1080p · MP4 · H.264</small>
-                  <div class="prog"><i></i></div>
-                  <div class="cstat"><span class="pct">0%</span><span class="spd">14.2 MB/s</span></div>
-                </div>
-                <div class="cside"><span class="done">✓ Saved to Downloads</span><span class="sf">Show in Finder</span></div>
-              </div>
-              <div class="qmenu">
-                <h6>Available</h6><div class="q1">1080p</div><div>720p</div><div>480p</div><div>Audio only (MP3)</div>
-                <hr><h6>Upscale</h6><div>1440p</div><div>4K</div>
-              </div>
-            </div>
-            <img class="d-logo img-grabb" src="{{Grabb}}" alt="">
-            <svg class="cursor"><use href="#arrow"/></svg>
-          </div>
+        <div class="player" data-video aria-label="Screen recording of Grabb downloading a video">
+          <video src="/media/grabb-demo.mp4" autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video>
         </div>
       </div>
     </div>
@@ -435,7 +393,7 @@ footer nav a{color:var(--ink-2)}
   }
 
   /* ---------- player ---------- */
-  document.querySelectorAll('.player').forEach(root=>{
+  document.querySelectorAll('.player[data-demo]').forEach(root=>{
     const T=root.dataset.demo==='spin'?SPIN_T:10, stage=root.querySelector('.stage');
     const render=(root.dataset.demo==='spin'?spinDemo:grabbDemo)(root);
     let t= reduce ? (root.dataset.demo==='spin'?3.6:6.8) : 0, playing=!reduce, visible=false, last=null;

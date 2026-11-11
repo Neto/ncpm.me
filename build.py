@@ -61,6 +61,14 @@ HEAD = """<!doctype html>
 <meta name="description" content="{description}">
 <meta property="og:title" content="{og_title}">
 <meta property="og:description" content="{description}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Spoon Software">
+<meta property="og:image" content="https://spoon.com.br/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Spoon Software: Spin and Grabb, small Mac apps for simple tasks.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://spoon.com.br/og-image.png">
 <link rel="icon" type="image/png" href="/favicon.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 """

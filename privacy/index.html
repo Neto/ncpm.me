@@ -160,17 +160,17 @@ footer nav a{color:var(--ink-2)}
 <main class="doc wrap">
   <p class="crumb"><a href="/">‹ Spin and Grabb</a></p>
   <h1>Privacy Policy</h1>
-  <p class="meta">Last updated November 9, 2026</p>
+  <p class="meta">Last updated November 12, 2026</p>
 
-  <p class="lead">Short version: our apps work on your Mac. The apps have no accounts, no analytics and no tracking. This website uses a Meta Pixel to measure our ads, only if you accept cookies. We get your personal data only when you buy an app or write to us.</p>
+  <p class="lead">Short version: our apps work on your Mac. The apps have no accounts, no analytics and no tracking. This website uses the Meta Pixel and the Reddit Pixel to measure our ads, only if you accept cookies. We get your personal data only when you buy an app or write to us.</p>
 
   <h2>Who we are</h2>
   <p>Spoon Software (“we”) makes the Mac apps Spin and Grabb and runs this website. For any privacy question, write to <a href="mailto:support@spoon.com.br">support@spoon.com.br</a>.</p>
 
   <h2 id="website">This website</h2>
   <p>This website is hosted on GitHub Pages. Like any web server, GitHub receives your IP address when you open a page and can keep it in its logs for security. See the <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub Privacy Statement</a>.</p>
-  <p>When you first open this website, we ask if you accept cookies for advertising. If you decline, the Meta Pixel does not load. We store your choice in your browser.</p>
-  <p>If you accept, this website loads the Meta Pixel from Meta Platforms. Meta can then receive your IP address, your browser details, Meta cookies, the pages you open, clicks on our buy buttons and the fact that you completed a purchase. We use this to measure our ads and to show ads to people who visited this website. The legal basis is your consent. Meta can process this data outside your country, under its own <a href="https://www.facebook.com/privacy/policy/">Privacy Policy</a>.</p>
+  <p>When you first open this website, we ask if you accept cookies for advertising. If you decline, the Meta Pixel and the Reddit Pixel do not load. We store your choice in your browser.</p>
+  <p>If you accept, this website loads the Meta Pixel from Meta Platforms and the Reddit Pixel from Reddit. Meta and Reddit can then receive your IP address, your browser details, their cookies, the pages you open, clicks on our buy buttons and the fact that you completed a purchase. We use this to measure our ads and to show ads to people who visited this website. The legal basis is your consent. Meta and Reddit can process this data outside your country, under their own privacy policies: <a href="https://www.facebook.com/privacy/policy/">Meta Privacy Policy</a> and <a href="https://www.reddit.com/policies/privacy-policy">Reddit Privacy Policy</a>.</p>
   <p>To change your choice at any time, click <b>Cookies</b> at the bottom of any page.</p>
 
   <h2>Spin</h2>
@@ -195,7 +195,7 @@ footer nav a{color:var(--ink-2)}
   <p>When you write to us, we keep your message and your email address so we can answer you.</p>
 
   <h2>What we do not do</h2>
-  <p>We do not sell your data. Our apps do not track you. We do not share your purchase records or emails for advertising. This website shares data with Meta only if you accept cookies.</p>
+  <p>We do not sell your data. Our apps do not track you. We do not share your purchase records or emails for advertising. This website shares data with Meta and Reddit only if you accept cookies.</p>
 
   <h2>How long we keep data</h2>
   <p>We keep purchase records for as long as tax law requires. We keep emails for as long as we need them to help you, and we delete them when you ask, unless the law requires us to keep them.</p>
@@ -222,12 +222,12 @@ footer nav a{color:var(--ink-2)}
 .consent button{min-height:40px;padding:0 18px;border:1px solid var(--line);border-radius:980px;background:transparent;color:var(--ink);font:inherit;cursor:pointer}
 </style>
 <div id="consent" class="consent" role="region" aria-label="Cookie choice" hidden>
-  <p>With your OK, we use a Meta Pixel to measure our ads. <a href="/privacy/#website">Privacy Policy</a></p>
+  <p>With your OK, we use the Meta Pixel and the Reddit Pixel to measure our ads. <a href="/privacy/#website">Privacy Policy</a></p>
   <div><button type="button" data-consent="no">Decline</button><button type="button" data-consent="yes">Accept</button></div>
 </div>
 <script>
 (function(){
-  var KEY="spoon-consent",PIXEL="1867919934360605",PURCHASE=null;
+  var KEY="spoon-consent-2",PIXEL="1867919934360605",REDDIT="a2_k00cwevu8yrm",PURCHASE=null;
   var box=document.getElementById("consent"),loaded=false;
   function get(k){try{return localStorage.getItem(k)}catch(e){return null}}
   function put(k,v){try{localStorage.setItem(k,v)}catch(e){}}
@@ -236,7 +236,9 @@ footer nav a{color:var(--ink-2)}
     if(loaded)return;loaded=true;
     !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version="2.0";n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,"script","https://connect.facebook.net/en_US/fbevents.js");
     fbq("init",PIXEL);fbq("track","PageView");
-    if(PURCHASE){var done="spoon-purchase:"+location.pathname;if(!get(done)){put(done,"1");fbq("track","Purchase",PURCHASE)}}
+    !function(w,d){if(!w.rdt){var p=w.rdt=function(){p.sendEvent?p.sendEvent.apply(p,arguments):p.callQueue.push(arguments)};p.callQueue=[];var t=d.createElement("script");t.src="https://www.redditstatic.com/ads/pixel.js";t.async=!0;var s=d.getElementsByTagName("script")[0];s.parentNode.insertBefore(t,s)}}(window,document);
+    rdt("init",REDDIT);rdt("track","PageVisit");
+    if(PURCHASE){var done="spoon-purchase:"+location.pathname;if(!get(done)){put(done,"1");fbq("track","Purchase",PURCHASE);rdt("track","Purchase",{currency:PURCHASE.currency,value:PURCHASE.value,itemCount:1})}}
   }
   document.addEventListener("click",function(e){
     var t=e.target.closest&&e.target.closest("a,button");if(!t)return;

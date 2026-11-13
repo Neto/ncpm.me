@@ -185,12 +185,12 @@ footer nav a{color:var(--ink-2)}
 .consent button{min-height:40px;padding:0 18px;border:1px solid var(--line);border-radius:980px;background:transparent;color:var(--ink);font:inherit;cursor:pointer}
 </style>
 <div id="consent" class="consent" role="region" aria-label="Cookie choice" hidden>
-  <p>With your OK, we use a Meta Pixel to measure our ads. <a href="/privacy/#website">Privacy Policy</a></p>
+  <p>With your OK, we use the Meta Pixel and the Reddit Pixel to measure our ads. <a href="/privacy/#website">Privacy Policy</a></p>
   <div><button type="button" data-consent="no">Decline</button><button type="button" data-consent="yes">Accept</button></div>
 </div>
 <script>
 (function(){
-  var KEY="spoon-consent",PIXEL="1867919934360605",PURCHASE=null;
+  var KEY="spoon-consent-2",PIXEL="1867919934360605",REDDIT="a2_k00cwevu8yrm",PURCHASE=null;
   var box=document.getElementById("consent"),loaded=false;
   function get(k){try{return localStorage.getItem(k)}catch(e){return null}}
   function put(k,v){try{localStorage.setItem(k,v)}catch(e){}}
@@ -199,7 +199,9 @@ footer nav a{color:var(--ink-2)}
     if(loaded)return;loaded=true;
     !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version="2.0";n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,"script","https://connect.facebook.net/en_US/fbevents.js");
     fbq("init",PIXEL);fbq("track","PageView");
-    if(PURCHASE){var done="spoon-purchase:"+location.pathname;if(!get(done)){put(done,"1");fbq("track","Purchase",PURCHASE)}}
+    !function(w,d){if(!w.rdt){var p=w.rdt=function(){p.sendEvent?p.sendEvent.apply(p,arguments):p.callQueue.push(arguments)};p.callQueue=[];var t=d.createElement("script");t.src="https://www.redditstatic.com/ads/pixel.js";t.async=!0;var s=d.getElementsByTagName("script")[0];s.parentNode.insertBefore(t,s)}}(window,document);
+    rdt("init",REDDIT);rdt("track","PageVisit");
+    if(PURCHASE){var done="spoon-purchase:"+location.pathname;if(!get(done)){put(done,"1");fbq("track","Purchase",PURCHASE);rdt("track","Purchase",{currency:PURCHASE.currency,value:PURCHASE.value,itemCount:1})}}
   }
   document.addEventListener("click",function(e){
     var t=e.target.closest&&e.target.closest("a,button");if(!t)return;
